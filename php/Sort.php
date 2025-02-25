@@ -60,10 +60,65 @@ class Sort
         return $array;
     }
 
+    /**
+     * 插入排序
+     */
+    public function insert($array)
+    {
+        dump($array);
+        // 最大数量
+        $maxNum = count($array);
+        for ($i = 1; $i < $maxNum; $i++) {
+            for ($j = $i; $j > 0; $j--) {
+                if($array[$j] > $array[$j-1]){
+                    $temp = $array[$j];
+                    $array[$j] = $array[$j-1];
+                    $array[$j-1] = $temp;
+                }
+            }
+            dump($array);
+        }
+
+        return $array;
+    }
+
+
+    /**
+     * 希尔排序
+     */
+    public function shellInsert(array $array): mixed
+    {
+        // 最大数量
+        $maxNum = count($array);
+
+        // 计算希尔间隔
+        $h = 1;
+        while ($h <= $maxNum / 3) {
+            $h = $h * 3 + 1;
+        }
+
+        for ($gap = $h; $gap >= 1; ($gap = ($gap - 1) / 3)) {
+            for ($i = $gap; $i < $maxNum; $i++) {
+                for ($j = $i; $j > $gap - 1; $j -= $gap) {
+                    if ($array[$j] > $array[$j - $gap]) {
+                        $temp             = $array[$j];
+                        $array[$j]        = $array[$j - $gap];
+                        $array[$j - $gap] = $temp;
+                    }
+                }
+                dump('希尔gap:'.$gap,$array);
+            }
+            dump($gap);
+        }
+
+        return $array;
+    }
+
 
 }
 
 $sort = new Sort();
 $arr = [9,1,88,8,2,2,33,8778,87,1,23];
-$select = $sort->selectSorting($arr);
+//$arr = [9,1,88,8];
+$select = $sort->shellInsert($arr);
 print_r($select);

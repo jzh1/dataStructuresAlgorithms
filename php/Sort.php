@@ -5,8 +5,12 @@ require 'vendor/autoload.php';
 
 class Sort
 {
-    // 选择排序
-    public function selectSorting(&$array)
+    /**
+     * 选择排序
+     * @param $array
+     * @return mixed
+     */
+    public function selectSorting($array): mixed
     {
         // 循环
         $maxNum = count($array);
@@ -35,9 +39,31 @@ class Sort
         return $array;
     }
 
+    /** 冒泡排序
+     * @param $array
+     * @return mixed
+     */
+    public function bubbling($array): mixed
+    {
+        $maxNum = count($array);
+        for ($i = $maxNum-1; $i > 0; $i--) {
+            for ($j = 0; $j < $i; $j++) {
+                if($array[$j] < $array[$j+1]){
+                    $temp = $array[$j];
+                    $array[$j] = $array[$j+1];
+                    $array[$j+1] = $temp;
+                }
+            }
+            dump($array);
+        }
+
+        return $array;
+    }
+
+
 }
 
 $sort = new Sort();
-$arr = [9,1,88,8,2];
+$arr = [9,1,88,8,2,2,33,8778,87,1,23];
 $select = $sort->selectSorting($arr);
 print_r($select);

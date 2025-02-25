@@ -1,6 +1,7 @@
 <?php
 
 namespace php;
+require 'vendor/autoload.php';
 
 class Sort
 {
@@ -13,7 +14,7 @@ class Sort
             // 指针, 默认指针放到当前循环的位置
             $pointer = $i;
             foreach ($array as $key => $value) {
-                var_dump($value);
+                dump($value);
                 // 这个大于小于是调整排序的
                 if($array[$pointer] > $value){
                     var_dump($pointer);
@@ -21,6 +22,7 @@ class Sort
                 }
                 // 循环到最后一个，调换位置
                 if ($key == ($maxNum-1)){
+                    var_dump('------------------',$key);
                     $temp = $array[$i];
                     $array[$i] = $array[$pointer];
                     $array[$pointer] = $temp;

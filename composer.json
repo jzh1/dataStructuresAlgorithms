@@ -1,7 +1,10 @@
 {
+    "require": {
+        "symfony/var-dumper": "^5.4"
+    },
     "autoload": {
         "files": [
-            "php/helpers.php"
+            "php/laravel_helpers.php"
         ]
     }
 }

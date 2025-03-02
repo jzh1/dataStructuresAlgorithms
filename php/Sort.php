@@ -84,7 +84,7 @@ class Sort
 
 
     /**
-     * 希尔排序
+     * 希尔排序（插入排序进阶版本）
      */
     public function shellInsert(array $array): mixed
     {
@@ -114,11 +114,75 @@ class Sort
         return $array;
     }
 
+    public function quick(array &$array): mixed
+    {
+        dump('开始------------------',$array);
+        // 指针位置
+        $leftBound = 0;
+        $rightBound = count($array)-1;
+
+        $this->quickSort($array,$leftBound,$rightBound);
+
+        return $array;
+    }
+
+    public function quickSort($array,$leftBound, $rightBound): mixed
+    {
+        dump('quickSort---------------------------',$array);
+        $mid = $this->quickSortMain($array,$leftBound, $rightBound);
+        $this->quickSort($array,$leftBound,$mid-1);
+        $this->quickSort($array,$mid+1,$rightBound);
+
+        return $array;
+    }
+
+    /**
+     * 交换位置
+     * @param array $array
+     * @param $i
+     * @param $j
+     * @return mixed
+     */
+    public function swap(array $array,$i,$j): mixed
+    {
+        $temp = $array[$i];
+        $array[$i] = $array[$j];
+        $array[$j] = $temp;
+
+        return $array;
+    }
+
+    /**
+     * @param int $left
+     * @param int $right
+     * @param mixed $array
+     * @param int $point
+     * @return mixed
+     */
+    private function quickSortMain(mixed $array, int $leftBound, int $rightBound): mixed
+    {
+        $left = $leftBound;
+        $right = $rightBound-1;
+        // 快速排序的效率取决于基准点的选择
+        $point =  $rightBound;
+
+        while ($left < $right) {
+            while ($array[$left] < $array[$point]) $left++;
+            while ($array[$right] > $array[$point]) $right--;
+            dump($array, '----', $left, $right);
+            $array = $this->swap($array, $left, $right);
+            dump('交换一次顺序后：--', $array);
+
+        }
+        $array = $this->swap($array, $left, $right);
+
+        return $left;
+    }
 
 }
 
 $sort = new Sort();
-$arr = [9,1,88,8,2,2,33,8778,87,1,23];
+$arr = [9,1,88,8,32,2,33,8778,87,1,23,100];
 //$arr = [9,1,88,8];
-$select = $sort->shellInsert($arr);
+$select = $sort->quick($arr);
 print_r($select);

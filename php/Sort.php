@@ -5,6 +5,8 @@ require 'vendor/autoload.php';
 
 class Sort
 {
+    protected array $quickArray = [];
+
     /**
      * 选择排序
      * @param $array
@@ -114,75 +116,86 @@ class Sort
         return $array;
     }
 
-    public function quick(array &$array): mixed
+    /**
+     * 快速排序
+     * @param $arr
+     * @return void
+     */
+    public function quick($arr)
     {
-        dump('开始------------------',$array);
+        $this->quickArray = $arr;
+        dump('开始------------------',$this->quickArray);
         // 指针位置
         $leftBound = 0;
-        $rightBound = count($array)-1;
+        $rightBound = count($this->quickArray)-1;
 
-        $this->quickSort($array,$leftBound,$rightBound);
+        $this->quickSort($leftBound,$rightBound);
 
-        return $array;
+        dump('结束 ------------------',$this->quickArray);
     }
 
-    public function quickSort($array,$leftBound, $rightBound): mixed
+    public function quickSort($leftBound, $rightBound)
     {
-        dump('quickSort---------------------------',$array);
-        $mid = $this->quickSortMain($array,$leftBound, $rightBound);
-        $this->quickSort($array,$leftBound,$mid-1);
-        $this->quickSort($array,$mid+1,$rightBound);
+        if ($leftBound >= $rightBound) {return ;}
+        dump('quickSort---------------------------start',$this->quickArray);
+        $mid = $this->quickSortMain($leftBound, $rightBound);
+        dump($this->quickArray,'quickSort$leftBound:'.$leftBound,'$mid-1：'.$mid-1,'$mid:'.$mid);
+        $this->quickSort($leftBound,$mid-1);
+        dump($this->quickArray,'quickSort$rightBound:'.$rightBound,'$mid+1:'.$mid+1,'$mid:'.$mid);
+        $this->quickSort($mid+1,$rightBound);
 
-        return $array;
+        dump('quickSort---------------------------end',$this->quickArray);
     }
+
 
     /**
-     * 交换位置
-     * @param array $array
-     * @param $i
-     * @param $j
+     * @param int $leftBound
+     * @param int $rightBound
      * @return mixed
      */
-    public function swap(array $array,$i,$j): mixed
-    {
-        $temp = $array[$i];
-        $array[$i] = $array[$j];
-        $array[$j] = $temp;
-
-        return $array;
-    }
-
-    /**
-     * @param int $left
-     * @param int $right
-     * @param mixed $array
-     * @param int $point
-     * @return mixed
-     */
-    private function quickSortMain(mixed $array, int $leftBound, int $rightBound): mixed
+    private function quickSortMain(int $leftBound, int $rightBound): mixed
     {
         $left = $leftBound;
         $right = $rightBound-1;
         // 快速排序的效率取决于基准点的选择
-        $point =  $rightBound;
+        $point =  $this->quickArray[$rightBound];
 
-        while ($left < $right) {
-            while ($array[$left] < $array[$point]) $left++;
-            while ($array[$right] > $array[$point]) $right--;
-            dump($array, '----', $left, $right);
-            $array = $this->swap($array, $left, $right);
-            dump('交换一次顺序后：--', $array);
+        while ($left <= $right) {
+            while ($left<=$right && $this->quickArray[$left] <= $point) {$left++;}
+            while ($left<=$right && $this->quickArray[$right] > $point) {$right--;}
+            dump($this->quickArray, '----', 'left:'.$left, 'right:'.$right);
+            if ($left < $right) {
+                $this->swap( $left, $right);
+            }
+            dump('交换一次顺序后：--', $this->quickArray);
 
         }
-        $array = $this->swap($array, $left, $right);
+        dump('left:'.$left, 'right:'.$right);
+        $this->swap($left, $rightBound);
+        dump($this->quickArray,'quickSortMain--------end');
 
         return $left;
+    }
+
+
+    /**
+     * 交换位置
+     * @param $i
+     * @param $j
+     * @return void
+     */
+    public function swap($i,$j): void
+    {
+        $temp = $this->quickArray[$i];
+        $this->quickArray[$i] = $this->quickArray[$j];
+        $this->quickArray[$j] = $temp;
     }
 
 }
 
 $sort = new Sort();
-$arr = [9,1,88,8,32,2,33,8778,87,1,23,100];
+$arr = [9,1,88,8,32,2,33,8778,87,1,23,100,40];
 //$arr = [9,1,88,8];
+
 $select = $sort->quick($arr);
 print_r($select);

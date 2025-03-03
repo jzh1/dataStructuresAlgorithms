@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 
 class QuickSort {
     // 主方法，程序的入口
